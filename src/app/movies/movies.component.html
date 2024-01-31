@@ -1,0 +1,59 @@
+<div *ngIf="movies.length > 0; else no_movies">
+  <h1>{{ title }}</h1>
+  <div class="alert alert-warning" *ngIf="movies.length === 1; else plural">
+    {{ movies.length }} movie found.
+  </div>
+  <ng-template #plural>
+    <div class="alert alert-warning" #plural>
+      {{ movies.length }} movies found.
+    </div>
+  </ng-template>
+  <!-- 
+    Template parameter with context, we can just use popular movies 
+    and getPopularMovies from component class directly just like {popularMovies}
+    -->
+  <ng-template
+    [ngTemplateOutlet]="movieList3"
+    [ngTemplateOutletContext]="{
+      popularMovies: movieRepository.getPopularMovies()
+    }"
+  ></ng-template>
+  <ng-template [ngTemplateOutlet]="movieList1"></ng-template>
+  <ng-template [ngTemplateOutlet]="movieList2"></ng-template>
+</div>
+
+<ng-template #no_movies>
+  <div class="alert alert-danger">Movie not found.</div>
+</ng-template>
+
+<!-- Normal list -->
+<ng-template #movieList1>
+  <app-movie *ngFor="let movie of movies" [movie]="movie"></app-movie>
+</ng-template>
+
+<!-- Featured movies -->
+<ng-template #movieList2>
+  <h4>Recommended movies</h4>
+  <app-movie *ngFor="let movie of movies" [movie]="movie"></app-movie>
+</ng-template>
+
+<!-- Popular movies -->
+<ng-template #movieList3 let-popularMoviesContext="popularMovies">
+  <h4>Popular movies</h4>
+  <div class="row row-cols-1 row-cols-md-2 g-4 mb-3">
+    <div class="col" *ngFor="let movie of popularMoviesContext">
+      <div class="card h-100" >
+        <img src="{{ movie.img }}" alt="" style="height: 300px; object-fit: cover;"/>
+        <div class="card-body">
+          <h5 class="card-title">{{movie.title}}</h5>
+          <p class="card-text">{{movie.description}}</p>
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-outline-dark">Detail</button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <app-movie *ngFor="let movie of popularMoviesContext" [movie]="movie"></app-movie> -->
+</ng-template>
