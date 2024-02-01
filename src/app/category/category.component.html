@@ -1,12 +1,25 @@
 <div class="list-group">
   <a
     href="#"
+    class="list-group-item list-group-item-action"
+    [class.bg-dark] = "displayAll"
+    [class.text-white] = "displayAll"
+    aria-current="true"
+    (click)="selectCategory($event)"
+  >
+    <p class="mb-1">Tüm kategoriler</p>
+    <small *ngIf="displayAll">Aradığınız ne varsa</small>
+  </a>
+  <a
+    href="#"
     *ngFor="let category of categories"
     class="list-group-item list-group-item-action"
-    [class]="{'active': category.isActive, 'bg-dark': category.isActive}"
     aria-current="true"
+    (click)="selectCategory($event, category)"
+    [class.bg-dark] = "!displayAll && selectedCategory?.id === category.id"
+    [class.text-white] = "!displayAll && selectedCategory?.id === category.id"
   >
-    <p class="mb-1">{{ category.title }}</p>
-    <small *ngIf="category.isActive">{{ category.subtitle }}</small>
+    <p class="mb-1">{{ category.title | titlecase }}</p>
+    <small *ngIf="!displayAll && selectedCategory?.id === category.id">{{ category.subtitle }}</small>
   </a>
 </div>
