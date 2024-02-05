@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../models/category';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import { MovieService } from '../services/movie.service';
 import { Router } from '@angular/router';
 import { AlertifyService } from '../services/alertify.service';
@@ -20,12 +20,11 @@ export class MovieCreateComponent implements OnInit {
   private movieService: MovieService = inject(MovieService);
   categories!: Category[];
 
-  categoryId: string = '';
-
   error: any;
 
-  
-  isRequired: boolean = false;
+  model: any = {
+    categoryId: ""
+  };
 
   // other injections
   constructor(private router: Router, private alertify: AlertifyService) {}
@@ -37,53 +36,34 @@ export class MovieCreateComponent implements OnInit {
     });
   }
 
-  createMovie(
-    title: HTMLInputElement,
-    description: HTMLTextAreaElement,
-    imageUrl: HTMLInputElement,
-    categoryId: string
-  ) {
+  createMovie() {
     let testId = 111;
 
-    // for basic validation, this logic normally is more complex
-    if (title.value === "" || description.value === "") {
-      this.isRequired = true;
-      this.alertify.error("Title and description required");
-      return
-    }
-
-    if (description.value.length > 50 || description.value.length < 10) {
-      this.alertify.error('Description characters must be 10-50');
-      return
-    }
-
-    const extensions = ['jpg', 'jpeg', 'png'];
-    const extension: string | undefined = imageUrl.value.split('.').pop();
-    
-    if (extension && extensions.indexOf(extension) === -1) {
-      this.alertify.error('Only jpg, jpeg, png allowed');
-      return
-    }
-    
+    console.log(this.model);
 
     const movie = {
       id: testId,
-      title: title.value,
-      description: description.value,
-      img: imageUrl.value,
+      title: this.model.title,
+      description: this.model.description,
+      img: this.model.imageUrl,
       isPopular: false,
       createdAt: new Date(),
-      categoryId: Number(categoryId),
+      categoryId: Number(this.model.categoryId),
     };
 
-    // this throws an error because json server couldnt be configured to disable cors and allow origin policy
-    this.movieService.createMovie(movie).subscribe({
-      next: (data) => {
-        // If successful post then navigate to
-        this.router.navigate(['/movies', data.id]);
-        console.log(data);
-      },
-      error: (err) => console.error(err),
-    });
+    console.log(movie);
+
+    // // this throws an error because json server couldnt be configured to disable cors and allow origin policy
+    // this.movieService.createMovie(movie).subscribe({
+    //   next: (data) => {
+    //     // If successful post then navigate to
+    //     this.router.navigate(['/movies', data.id]);
+    //     console.log(data);
+    //   },
+    //   error: (err) => console.error(err),
+    // });
+  }
+  log(categoryId: NgModel) {
+    console.log(categoryId)
   }
 }
