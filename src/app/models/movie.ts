@@ -5,4 +5,5 @@ export interface Movie {
     img: string;
     isPopular: boolean;
     createdAt: Date;
+    categoryId: number;
 }

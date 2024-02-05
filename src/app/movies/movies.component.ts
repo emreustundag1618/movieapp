@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MovieComponent } from './movie/movie.component';
 import { CommonModule } from '@angular/common';
 import { Movie } from '../models/movie';
@@ -7,7 +7,9 @@ import { SummaryPipe } from '../pipes/summary.pipe';
 import { FormsModule } from '@angular/forms';
 import { MovieFilterPipe } from '../pipes/movie-filter.pipe';
 import { AlertifyService } from '../services/alertify.service';
-
+import { MovieService } from '../services/movie.service';
+import { ActivatedRoute } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-movies',
@@ -17,50 +19,82 @@ import { AlertifyService } from '../services/alertify.service';
     CommonModule,
     SummaryPipe,
     FormsModule,
-    MovieFilterPipe
+    MovieFilterPipe,
+    RouterModule
   ],
   templateUrl: './movies.component.html',
   styleUrl: './movies.component.scss',
+  // for local services
+  providers: [MovieService],
 })
-export class MoviesComponent {
+export class MoviesComponent implements OnInit {
   title = 'Movies';
-  movies: Movie[];
-  movieRepository: MovieRepository;
-  // popularMovies: Movie[];
-  filteredMovies: Movie[];
+  movies: Movie[] = [];
+  movieRepository!: MovieRepository;
+  popularMovies: Movie[];
+  filteredMovies: Movie[] = [];
   selectedMovie: Movie | null = null;
+
+  movieService: MovieService = inject(MovieService);
+  selectedCategoryId: number = 0;
 
   searchTerm: string = '';
 
-  constructor(private alertify: AlertifyService) {
+  // For error handling
+  error: any;
+
+  constructor(
+    private alertify: AlertifyService,
+    private activatedRoute: ActivatedRoute
+  ) {
     this.movieRepository = new MovieRepository();
-    this.movies = this.movieRepository.getMovies();
-    this.filteredMovies = this.movies;
-    
-    // this.popularMovies = this.movieRepository.getPopularMovies();
+    // this one before was retrieved from movieRepository which has the data in local
+    // this.movies = this.movieRepository.getMovies();
+
+    this.popularMovies = this.movieRepository.getPopularMovies();
+  }
+
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params) => {
+      this.selectedCategoryId = params['categoryId']
+      this.movieService.getMovies(this.selectedCategoryId).subscribe({
+        next: (data) => {
+          this.movies = data;
+          this.filteredMovies = data;
+        },
+        error: (error) => {
+          this.error = error;
+        },
+        complete: () => console.log("done")
+      });
+    });
   }
 
   onInputChange() {
-    this.filteredMovies = this.searchTerm?
-      this.filteredMovies.filter(movie => movie.title.indexOf(this.searchTerm) !== -1
-      || movie.description.indexOf(this.searchTerm) !== -1) : this.movies;
+    this.filteredMovies = this.searchTerm
+      ? this.filteredMovies.filter(
+          (movie) =>
+            movie.title.indexOf(this.searchTerm) !== -1 ||
+            movie.description.indexOf(this.searchTerm) !== -1
+        )
+      : this.movies;
   }
 
   addToList($event: any, movie: Movie) {
     this.selectedMovie = movie;
 
-    if($event.target.classList.contains('btn-dark')) {
-      $event.target.innerText = "- Remove from list"
+    if ($event.target.classList.contains('btn-dark')) {
+      $event.target.innerText = '- Remove from list';
       $event.target.classList.remove('btn-dark');
       $event.target.classList.add('btn-warning');
 
-      this.alertify.success(movie.title + " added to the list");
+      this.alertify.success(movie.title + ' added to the list');
     } else {
-      $event.target.innerText = "+ Add to list"
+      $event.target.innerText = '+ Add to list';
       $event.target.classList.remove('btn-warning');
       $event.target.classList.add('btn-dark');
 
-      this.alertify.warning(movie.title + " removed from the list");
+      this.alertify.warning(movie.title + ' removed from the list');
     }
   }
 }

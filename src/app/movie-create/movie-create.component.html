@@ -1,0 +1,33 @@
+<h1>Create a Movie</h1>
+<form>
+  <div class="mb-3">
+    <label for="title" class="form-label">Title:</label>
+    <input #title type="text" class="form-control" />
+    <small *ngIf="isRequired" class="text-danger">Required</small>
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description:</label>
+    <textarea #description class="form-control"></textarea>
+    <small *ngIf="isRequired" class="text-danger">Required</small>
+  </div>
+  <div class="mb-3">
+    <label for="imgUrl" class="form-label">Image URL:</label>
+    <input #imageUrl type="text" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="inlineFormCustomSelectPref">Category:</label>
+    <select
+      [(ngModel)]="categoryId"
+      class="custom-select my-1 mr-sm-2"
+      id="inlineFormCustomSelectPref"
+      name="categorySelect"
+    >
+      <option value="" selected>Choose one...</option>
+      <option [value]="category.id" *ngFor="let category of categories">
+        {{ category.title | titlecase }}
+      </option>
+    </select>
+    <p>Selected Option: {{ categoryId }}</p>
+    <button class="btn btn-dark" (click)="createMovie(title, description, imageUrl, categoryId)">Create</button>
+  </div>
+</form>

@@ -1,6 +1,9 @@
 <div class="list-group">
+  <!-- if below a tag has href="#" then the link will be loaded and page refreshed.
+  routerLink is an alternative for a SPA -->
   <a
-    href="#"
+    
+    routerLink="/movies"
     class="list-group-item list-group-item-action"
     [class.bg-dark] = "displayAll"
     [class.text-white] = "displayAll"
@@ -11,7 +14,7 @@
     <small *ngIf="displayAll">Aradığınız ne varsa</small>
   </a>
   <a
-    href="#"
+    [routerLink]="['/movies/category/', category.id]"
     *ngFor="let category of categories"
     class="list-group-item list-group-item-action"
     aria-current="true"

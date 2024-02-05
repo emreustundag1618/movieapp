@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { SummaryPipe } from '../../pipes/summary.pipe';
 import { ReadableTimePipe } from '../../pipes/readable-time.pipe';
 import { MoviesComponent } from '../movies.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-movie',
   standalone: true,
-  imports: [CommonModule, SummaryPipe, ReadableTimePipe],
+  imports: [CommonModule, RouterModule, SummaryPipe, ReadableTimePipe],
   templateUrl: './movie.component.html',
   styleUrl: './movie.component.scss'
 })

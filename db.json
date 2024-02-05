@@ -1,0 +1,67 @@
+{
+  "movies": [
+    {
+      "id": 1,
+      "title": "movie 1",
+      "description": "1 This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+      "img": "../../assets/1.jpeg",
+      "isPopular": true,
+      "createdAt": "2023-11-10T00:00:00.000Z",
+      "categoryId": 1
+    },
+    {
+      "id": 2,
+      "title": "movie 2",
+      "description": "2 This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+      "img": "https://images.pexels.com/photos/12519524/pexels-photo-12519524.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "isPopular": false,
+      "createdAt": "2024-01-18T00:00:00.000Z",
+      "categoryId": 2
+    },
+    {
+      "id": 3,
+      "title": "movie 3",
+      "description": "3 This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+      "img": "https://images.pexels.com/photos/1904837/pexels-photo-1904837.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "isPopular": true,
+      "createdAt": "1990-11-10T00:00:00.000Z",
+      "categoryId": 3
+    },
+    {
+      "id": 4,
+      "title": "movie 4",
+      "description": "4 This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+      "img": "https://images.pexels.com/photos/1904837/pexels-photo-1904837.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "isPopular": true,
+      "createdAt": "1990-11-10T00:00:00.000Z",
+      "categoryId": 4
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "title": "macera",
+      "subtitle": "Macera ve aksiyon filmleri"
+    },
+    {
+      "id": 2,
+      "title": "romantik",
+      "subtitle": "Romantik filmler"
+    },
+    {
+      "id": 3,
+      "title": "dram",
+      "subtitle": "Dram filmleri"
+    },
+    {
+      "id": 4,
+      "title": "bilim kurgu",
+      "subtitle": "Bilim Kurgu filmleri"
+    },
+    {
+      "id": 5,
+      "title": "Disabled category",
+      "subtitle": "Disabled category"
+    }
+  ]
+}

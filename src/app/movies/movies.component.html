@@ -1,3 +1,10 @@
+<div class="alert alert-danger" *ngIf="error">
+  <!-- {{ error.message }} -->
+  <!-- An error occured. Please look at logs if you are an IT professional. -->
+  <!-- Use this if you use catchError operator when subscribing a data -->
+  {{ error }}
+</div>
+
 <div *ngIf="movies.length > 0; else no_movies">
   <h1>{{ title }}</h1>
 
@@ -29,7 +36,7 @@
     and getPopularMovies from component class directly just like {popularMovies}
     -->
   <ng-template
-    *ngIf="!searchTerm"
+    *ngIf="!searchTerm && !selectedCategoryId"
     [ngTemplateOutlet]="movieList3"
     [ngTemplateOutletContext]="{
       popularMovies: movieRepository.getPopularMovies()
@@ -76,7 +83,7 @@
           <h5 class="card-title">{{ movie.title | titlecase }}</h5>
           <p class="card-text">{{ movie.description | summary : 55 }}</p>
           <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-outline-dark mx-2">
+            <button routerLink="/movies/{{movie.id}}" type="button" class="btn btn-outline-dark mx-2">
               Details
             </button>
             <button (click)="addToList($event, movie)" type="button" class="btn btn-dark">

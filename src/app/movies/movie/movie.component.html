@@ -21,7 +21,7 @@
           >
         </p>
         <div class="d-flex justify-content-start">
-          <button type="button" class="btn btn-outline-dark">
+          <button [routerLink]="['/movies/', movie.id]"  type="button" class="btn btn-outline-dark">
             Details
           </button>
           <button (click)="callAddToList($event, movie)"  type="button" class="btn btn-dark mx-2">

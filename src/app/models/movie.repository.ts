@@ -13,6 +13,7 @@ export class MovieRepository {
         img: '../../assets/1.jpeg',
         isPopular: true,
         createdAt: new Date(2023, 10, 10),
+        categoryId: 1
       },
       {
         id: 2,
@@ -22,6 +23,7 @@ export class MovieRepository {
         img: 'https://images.pexels.com/photos/12519524/pexels-photo-12519524.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
         isPopular: false,
         createdAt: new Date(2024, 0, 18),
+        categoryId: 1
       },
       {
         id: 3,
@@ -31,6 +33,7 @@ export class MovieRepository {
         img: 'https://images.pexels.com/photos/1904837/pexels-photo-1904837.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
         isPopular: true,
         createdAt: new Date(1990, 10, 10),
+        categoryId: 2
       },
     ];
   }
