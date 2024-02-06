@@ -1,10 +1,19 @@
-// this is useful but have to be use with required, minlength in forms' input elements
+// this is useful when using template driven forms in angular but have to be use with required, minlength in forms' input elements
+
 form {
   .form-control.ng-touched.ng-invalid {
     border-left: 5px solid #a94443;
   }
 
   .form-control.ng-dirty.ng-valid {
+    border-left: 5px solid #249b59;
+  }
+
+  .custom-select.ng-touched.ng-invalid {
+    border-left: 5px solid #a94443;
+  }
+
+  .custom-select.ng-dirty.ng-valid {
     border-left: 5px solid #249b59;
   }
 }

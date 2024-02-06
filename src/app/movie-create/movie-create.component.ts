@@ -2,7 +2,15 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../models/category';
-import { FormsModule, NgForm, NgModel } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NgForm,
+  NgModel,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MovieService } from '../services/movie.service';
 import { Router } from '@angular/router';
 import { AlertifyService } from '../services/alertify.service';
@@ -10,7 +18,7 @@ import { AlertifyService } from '../services/alertify.service';
 @Component({
   selector: 'app-movie-create',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './movie-create.component.html',
   styleUrl: './movie-create.component.scss',
   providers: [CategoryService, MovieService],
@@ -23,7 +31,7 @@ export class MovieCreateComponent implements OnInit {
   error: any;
 
   model: any = {
-    categoryId: ""
+    categoryId: '',
   };
 
   // other injections
@@ -36,22 +44,27 @@ export class MovieCreateComponent implements OnInit {
     });
   }
 
+  movieForm = new FormGroup({
+    title: new FormControl('Movie name...', [Validators.required, Validators.minLength(5)]),
+    description: new FormControl('Description...', [Validators.required, Validators.minLength(10)]),
+    imageUrl: new FormControl('Image Url...', [Validators.required]),
+    categoryId: new FormControl('', [Validators.required]),
+  });
+
   createMovie() {
     let testId = 111;
 
-    console.log(this.model);
-
     const movie = {
       id: testId,
-      title: this.model.title,
-      description: this.model.description,
-      img: this.model.imageUrl,
+      title: this.movieForm.value.title,
+      description: this.movieForm.value.description,
+      img: this.movieForm.value.imageUrl,
       isPopular: false,
       createdAt: new Date(),
-      categoryId: Number(this.model.categoryId),
+      categoryId: Number(this.movieForm.value.categoryId),
     };
 
-    console.log(movie);
+    console.log(this.movieForm);
 
     // // this throws an error because json server couldnt be configured to disable cors and allow origin policy
     // this.movieService.createMovie(movie).subscribe({
@@ -64,6 +77,15 @@ export class MovieCreateComponent implements OnInit {
     // });
   }
   log(categoryId: NgModel) {
-    console.log(categoryId)
+    console.log(categoryId);
+  }
+
+  refreshForm() {
+    this.movieForm.patchValue({
+      title: '',
+      description: '',
+      imageUrl: '',
+      categoryId: ''
+    })
   }
 }
