@@ -3,6 +3,7 @@ import { MoviesComponent } from './movies/movies.component';
 import { CategoryComponent } from './category/category.component';
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { MovieCreateComponent } from './movie-create/movie-create.component';
+import { CategoryCreateComponent } from './category-create/category-create.component';
 
 export const routes: Routes = [
     {
@@ -35,6 +36,11 @@ export const routes: Routes = [
         path: 'categories',
         component: CategoryComponent,
         title: 'Categories for testing'
+    },
+    {
+        path: 'categories/create',
+        component: CategoryCreateComponent,
+        title: 'Category create'
     }
     
 ];

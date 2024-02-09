@@ -4,49 +4,56 @@
   <!-- Use this if you use catchError operator when subscribing a data -->
   {{ error }}
 </div>
-
-<div *ngIf="movies.length > 0; else no_movies">
-  <h1>{{ title }}</h1>
-
-  <div class="mb-3">
-    <input
-      [(ngModel)]="searchTerm"
-      (ngModelChange)="onInputChange()"
-      type="text"
-      class="form-control mb-3"
-      placeholder="Search movie..."
-    />
-    <small class="text-muted" *ngIf="searchTerm"
-      >Search term: {{ searchTerm }}</small
-    >
-    <div
-      class="alert alert-warning"
-      *ngIf="filteredMovies.length <= 1; else plural"
-    >
-      {{ filteredMovies.length }} movie found.
-    </div>
-    <ng-template #plural>
-      <div class="alert alert-warning" #plural>
-        {{ filteredMovies.length }} movies found.
-      </div>
-    </ng-template>
+<div class="d-flex justify-content-center">
+  <div *ngIf="isLoading" class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
   </div>
-  <!-- 
+</div>
+
+<div *ngIf="!isLoading">
+  <div *ngIf="movies.length > 0; else no_movies">
+    <h1>{{ title }}</h1>
+
+    <div class="mb-3">
+      <input
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onInputChange()"
+        type="text"
+        class="form-control mb-3"
+        placeholder="Search movie..."
+      />
+      <small class="text-muted" *ngIf="searchTerm"
+        >Search term: {{ searchTerm }}</small
+      >
+      <div
+        class="alert alert-warning"
+        *ngIf="filteredMovies.length <= 1; else plural"
+      >
+        {{ filteredMovies.length }} movie found.
+      </div>
+      <ng-template #plural>
+        <div class="alert alert-warning" #plural>
+          {{ filteredMovies.length }} movies found.
+        </div>
+      </ng-template>
+    </div>
+    <!-- 
     Template parameter with context, we can just use popular movies 
     and getPopularMovies from component class directly just like {popularMovies}
     -->
-  <ng-template
-    *ngIf="!searchTerm && !selectedCategoryId"
-    [ngTemplateOutlet]="movieList3"
-    [ngTemplateOutletContext]="{
-      popularMovies: movieRepository.getPopularMovies()
-    }"
-  ></ng-template>
-  <ng-template [ngTemplateOutlet]="movieList1"></ng-template>
-  <ng-template
-    [ngTemplateOutlet]="movieList2"
-    *ngIf="!searchTerm"
-  ></ng-template>
+    <ng-template
+      *ngIf="!searchTerm && !selectedCategoryId"
+      [ngTemplateOutlet]="movieList3"
+      [ngTemplateOutletContext]="{
+        popularMovies: movieRepository.getPopularMovies()
+      }"
+    ></ng-template>
+    <ng-template [ngTemplateOutlet]="movieList1"></ng-template>
+    <ng-template
+      [ngTemplateOutlet]="movieList2"
+      *ngIf="!searchTerm"
+    ></ng-template>
+  </div>
 </div>
 
 <ng-template #no_movies>
@@ -64,7 +71,7 @@
   <app-movie
     *ngFor="let movie of movies | movieFilter : searchTerm"
     [movie]="movie"
-    [selectedMovie]="selectedMovie? selectedMovie : null"
+    [selectedMovie]="selectedMovie ? selectedMovie : null"
   ></app-movie>
 </ng-template>
 
@@ -83,10 +90,18 @@
           <h5 class="card-title">{{ movie.title | titlecase }}</h5>
           <p class="card-text">{{ movie.description | summary : 55 }}</p>
           <div class="d-flex justify-content-end">
-            <button routerLink="/movies/{{movie.id}}" type="button" class="btn btn-outline-dark mx-2">
+            <button
+              routerLink="/movies/{{ movie.id }}"
+              type="button"
+              class="btn btn-outline-dark mx-2"
+            >
               Details
             </button>
-            <button (click)="addToList($event, movie)" type="button" class="btn btn-dark">
+            <button
+              (click)="addToList($event, movie)"
+              type="button"
+              class="btn btn-dark"
+            >
               {{ "+" }} Add To List
             </button>
           </div>

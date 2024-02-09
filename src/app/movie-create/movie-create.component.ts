@@ -34,8 +34,23 @@ export class MovieCreateComponent implements OnInit {
     categoryId: '',
   };
 
+  movieForm!: FormGroup;
+
   // other injections
-  constructor(private router: Router, private alertify: AlertifyService) {}
+  constructor(private router: Router, private alertify: AlertifyService) {
+    this.movieForm = new FormGroup({
+      title: new FormControl('Movie name...', [
+        Validators.required,
+        Validators.minLength(5),
+      ]),
+      description: new FormControl('Description...', [
+        Validators.required,
+        Validators.minLength(10),
+      ]),
+      imageUrl: new FormControl('Image Url...', [Validators.required]),
+      categoryId: new FormControl('', [Validators.required]),
+    });
+  }
 
   ngOnInit(): void {
     this.categoryService.getCategories().subscribe({
@@ -44,15 +59,8 @@ export class MovieCreateComponent implements OnInit {
     });
   }
 
-  movieForm = new FormGroup({
-    title: new FormControl('Movie name...', [Validators.required, Validators.minLength(5)]),
-    description: new FormControl('Description...', [Validators.required, Validators.minLength(10)]),
-    imageUrl: new FormControl('Image Url...', [Validators.required]),
-    categoryId: new FormControl('', [Validators.required]),
-  });
-
   createMovie() {
-    let testId = 111;
+    let testId = "111";
 
     const movie = {
       id: testId,
@@ -67,15 +75,20 @@ export class MovieCreateComponent implements OnInit {
     console.log(this.movieForm);
 
     // // this throws an error because json server couldnt be configured to disable cors and allow origin policy
-    // this.movieService.createMovie(movie).subscribe({
-    //   next: (data) => {
-    //     // If successful post then navigate to
-    //     this.router.navigate(['/movies', data.id]);
-    //     console.log(data);
-    //   },
-    //   error: (err) => console.error(err),
-    // });
+
+    if (this.movieForm.valid) {
+      this.movieService.createMovieToFirebase(movie).subscribe({
+        next: (data) => {
+          // If successful post then navigate to
+          this.router.navigate(['/movies']);
+        },
+        error: (err) => console.error(err),
+      });
+    } else {
+      console.error('Form is not valid')
+    }
   }
+
   log(categoryId: NgModel) {
     console.log(categoryId);
   }
@@ -85,7 +98,7 @@ export class MovieCreateComponent implements OnInit {
       title: '',
       description: '',
       imageUrl: '',
-      categoryId: ''
-    })
+      categoryId: '',
+    });
   }
 }

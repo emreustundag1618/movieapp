@@ -20,7 +20,7 @@ import { RouterModule } from '@angular/router';
     SummaryPipe,
     FormsModule,
     MovieFilterPipe,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './movies.component.html',
   styleUrl: './movies.component.scss',
@@ -43,6 +43,8 @@ export class MoviesComponent implements OnInit {
   // For error handling
   error: any;
 
+  isLoading: boolean = false;
+
   constructor(
     private alertify: AlertifyService,
     private activatedRoute: ActivatedRoute
@@ -56,17 +58,33 @@ export class MoviesComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
-      this.selectedCategoryId = params['categoryId']
+      this.selectedCategoryId = params['categoryId'];
       this.movieService.getMovies(this.selectedCategoryId).subscribe({
         next: (data) => {
-          this.movies = data;
-          this.filteredMovies = data;
+          // this.movies = data;
+          // this.filteredMovies = data;
+          // console.log(this.movies)
         },
         error: (error) => {
           this.error = error;
         },
-        complete: () => console.log("done")
+        // complete: () => console.log('done'),
       });
+
+      let enableFirebase: boolean = true;
+      this.isLoading = true;
+      enableFirebase
+        ? this.movieService
+            .getMoviesFromFirebase(this.selectedCategoryId)
+            .subscribe((data) => {
+              this.movies = data;
+              this.filteredMovies = data;
+              this.isLoading = false;
+            }, error => {
+              this.error = error;
+              this.isLoading = false;
+            })
+        : null;
     });
   }
 

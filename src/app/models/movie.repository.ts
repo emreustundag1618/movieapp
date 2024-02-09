@@ -1,12 +1,12 @@
 import { Movie } from './movie';
 
 export class MovieRepository {
-  private movies: Movie[];
+  private movies!: Movie[];
 
   constructor() {
     this.movies = [
       {
-        id: 1,
+        id: "0",
         title: 'movie 1',
         description:
           '1 This is a wider cardd with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
@@ -16,7 +16,7 @@ export class MovieRepository {
         categoryId: 1
       },
       {
-        id: 2,
+        id: "1",
         title: 'movie 2',
         description:
           '2 This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
@@ -26,7 +26,7 @@ export class MovieRepository {
         categoryId: 1
       },
       {
-        id: 3,
+        id: "2",
         title: 'movie 3',
         description:
           '3 This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
@@ -43,7 +43,7 @@ export class MovieRepository {
   }
 
   // we can strict null checks from typescript not to use undefined here
-  getMovieById(id: number): Movie | undefined{
+  getMovieById(id: string): Movie | undefined{
     return this.movies.find((movie) => movie.id === id);
   }
 

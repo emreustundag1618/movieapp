@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class MovieDetailsComponent implements OnInit {
   movie!: Movie;
+  isLoading: boolean = false;
 
   constructor(
     private movieService: MovieService,
@@ -21,9 +22,11 @@ export class MovieDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.activatedRoute.params.subscribe((params) => {
-      this.movieService.getMovieById(params['movieId']).subscribe((data) => {
-        this.movie = data[0];
+      this.movieService.getMovieByIdFromFirebase(params['movieId']).subscribe((data) => {
+        this.movie = data;
+        this.isLoading = false;
       });
     });
   }

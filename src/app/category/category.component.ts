@@ -27,8 +27,12 @@ export class CategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.categoryService.getCategories().subscribe(data => {
-      this.categories = data
+    // this.categoryService.getCategories().subscribe(data => {
+    //   this.categories = data
+    // })
+
+    this.categoryService.getCategoriesFromFirebase().subscribe(data => {
+      this.categories = data;
     })
   }
 
