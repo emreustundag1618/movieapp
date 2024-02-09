@@ -1,1 +1,27 @@
-<p>movie-details works!</p>
+<div *ngIf="!isLoading">
+  <div *ngIf="movie; else no_movie">
+    <div class="card">
+      <div class="row">
+        <div class="col-md-4">
+          <img src="{{ movie.img }}" alt="" class="img-fluid rounded-start" />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h1>{{ movie.title | titlecase }}</h1>
+            <div class="card-text">{{ movie.description }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #no_movie>
+    <div class="alert alert-danger">Movie not found.</div>
+  </ng-template>
+</div>
+
+<div class="d-flex justify-content-center mt-5">
+  <div *ngIf="isLoading" class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>

@@ -2,23 +2,32 @@
   <div class="row g-0">
     <div class="col-md-2">
       <img
-        src="{{movie.img}}"
+        src="{{ movie.img }}"
         class="img-fluid rounded-start"
         alt=""
-        style="min-height: 200px; object-fit: cover;"
+        style="min-height: 200px; object-fit: cover"
       />
     </div>
     <div class="col-md-8">
       <div class="card-body">
-        <h5 class="card-title">{{movie.title}}</h5>
+        <h5 class="card-title">{{ movie.title | titlecase }}</h5>
         <p class="card-text">
-          {{movie.description}}
+          {{ movie.description | summary }}
         </p>
-        
+
         <p class="card-text">
-          <small class="text-muted">Last updated 3 mins ago</small>
+          <small class="text-muted"
+            >Last updated {{ movie.createdAt | readableTime}}</small
+          >
         </p>
-        <button type="button" class="btn btn-outline-dark">Detail</button>
+        <div class="d-flex justify-content-start">
+          <button [routerLink]="['/movies/', movie.id]"  type="button" class="btn btn-outline-dark">
+            Details
+          </button>
+          <button (click)="callAddToList($event, movie)"  type="button" class="btn btn-dark mx-2">
+            {{ "+" }} Add To List
+          </button>
+        </div>
       </div>
     </div>
   </div>
