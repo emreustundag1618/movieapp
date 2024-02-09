@@ -113,7 +113,7 @@ export class MovieService {
       }),
     };
     return this.http.post<Movie>(this.url, movie, httpOptions).pipe(
-      // tap((data) => console.log(data)),
+      tap((data) => console.log(data)),
       catchError(this.handleError)
     );
   }
