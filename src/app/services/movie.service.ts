@@ -42,7 +42,7 @@ export class MovieService {
     return this.http.get<Movie[]>(newUrl + 'movies.json').pipe(
       // Used when you want to affect outside state with a notification
       // without altering the notification
-      tap((data) => console.log(data)),
+      // tap((data) => console.log(data)),
       map((data) => {
         const movieArray: Movie[] = [];
 
@@ -55,7 +55,7 @@ export class MovieService {
             movieArray.push({ ...data[key], id: key });
           }
         }
-        console.log(movieArray);
+        // console.log(movieArray);
         return movieArray;
       }),
       // If you plan to use one error message just throw it like this.
@@ -89,6 +89,9 @@ export class MovieService {
     } else {
       // backend or api error
       switch (error.status) {
+        case 401:
+          err = 'Unauthorized to see this page. Please login';
+          break;
         case 404:
           err = '404 Not Found';
           break;
@@ -100,6 +103,7 @@ export class MovieService {
           break;
         default:
           err = 'An unknown error occured';
+          break;
       }
     }
     return throwError(err);
@@ -113,7 +117,6 @@ export class MovieService {
       }),
     };
     return this.http.post<Movie>(this.url, movie, httpOptions).pipe(
-      tap((data) => console.log(data)),
       catchError(this.handleError)
     );
   }

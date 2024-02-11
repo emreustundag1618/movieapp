@@ -4,6 +4,7 @@ import { CategoryComponent } from './category/category.component';
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { MovieCreateComponent } from './movie-create/movie-create.component';
 import { CategoryCreateComponent } from './category-create/category-create.component';
+import { AuthComponent } from './auth/auth.component';
 
 export const routes: Routes = [
     {
@@ -11,6 +12,11 @@ export const routes: Routes = [
         // if we don't have a seperate homepage
         redirectTo: 'movies', 
         pathMatch: 'full'
+    },
+    {
+        path: 'auth',
+        component: AuthComponent,
+        title: 'Sign In / Sign Up'
     },
     {
         path: 'movies', 
